@@ -84,6 +84,7 @@ function buildCharts(sample) {
       trace = {
         y: otu_ids.slice(0,10).map(id => "OTU " + id).reverse(),
         x: yticks,
+        text: otu_labels.slice(0,10).reverse(),
         name: "Bacteria",
         type: "bar",
         orientation: "h"
