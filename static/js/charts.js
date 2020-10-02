@@ -59,6 +59,7 @@ function buildCharts(sample) {
   d3.json("static/json/samples.json").then((data) => {
     // 3. Create a variable that holds the samples array. 
     var samples = data.samples
+    var wfreq = data.metadata.filter(sampleObj => sampleObj.id == sample)[0].wfreq;
 
     // 4. Create a variable that filters the samples for the object with the desired sample number.
     var resultArray = samples.filter(sampleObj => sampleObj.id == sample);
@@ -81,25 +82,48 @@ function buildCharts(sample) {
       trace = {
         y: otu_ids.slice(0,10).map(id => "OTU " + id).reverse(),
         x: yticks,
+        textfont: {
+          color: "#ff0000"
+        },
         text: otu_labels.slice(0,10).reverse(),
-        name: "Bacteria",
         type: "bar",
         orientation: "h"
       }
       
     ];
     // 9. Create the layout for the bar chart. 
-    var layout = {
-      title: "Top 10 Bacteria Cultures Found",
-      margin: {
-        l: 100,
-        r: 100,
-        t: 100,
-        b: 100
-      }
+    var barLayout = {
+      title:
+      {
+        text : "Top 10 Bacteria Cultures Found",
+        font : {
+          size: 20,
+          color : 'red'
+        }
+      } ,
+      plot_bgcolor: "#f5f5f5",
+      paper_bgcolor:"#f5f5f5",
+      xaxis : {
+        tickfont : {
+          size: 16,
+          color : 'red'
+        }
+      },
+      yaxis : {
+        tickfont : {
+          size: 16,
+          color : 'red'
+        }
+      },
+      // margin: {
+      //   l: 100,
+      //   r: 100,
+      //   t: 100,
+      //   b: 100
+      // }
     };
     // 10. Use Plotly to plot the data with the layout. 
-    Plotly.newPlot("bar", barData, layout);
+    Plotly.newPlot("bar", barData, barLayout);
 
     // 11. Bubble Chart
     var bubbleData = [
@@ -113,22 +137,96 @@ function buildCharts(sample) {
           color: otu_ids
         },
         text: otu_labels,
-        name: "Bacteria",
         type: "scatter"
       },
     ];
   
     var bubbleLayout = {
-      title: "Bacteria Cultures Per Sample",
-      margin: {
-        l: 100,
-        r: 100,
-        t: 100,
-        b: 100
-      }
+      title:
+      {
+        text : "Bacteria Cultures Per Sample",
+        font : {
+          size: 20,
+          color : 'red'
+        }
+      } ,
+      plot_bgcolor: "#f5f5f5",
+      paper_bgcolor:"#f5f5f5",
+      xaxis : {
+        tickfont : {
+          size: 16,
+          color : 'red'
+        }
+      },
+      yaxis : {
+        tickfont : {
+          size: 16,
+          color : 'red'
+        }
+      },
+      // margin: {
+      //   l: 100,
+      //   r: 100,
+      //   t: 100,
+      //   b: 100
+      // }
     };
 
     Plotly.newPlot("bubble", bubbleData, bubbleLayout);
+
+    // 12. Gauge Chart
+    var gaugeData = [
+      trace = {
+        domain: { x: [0, 1], y: [0, 1] },
+        mode: "gauge+number",
+        title: { text: "Scrubs Per Week" },
+        type: "indicator",
+        value: wfreq,
+        gauge: {
+          axis: { range: [null, 10] },
+          bar: { color: "black" },
+          steps: [
+            { range: [0, 2], color: "red" },
+            { range: [2, 4], color: "orange" },
+            { range: [4, 6], color: "yellow" },
+            { range: [6, 8], color: "darkseagreen" },
+            { range: [8, 10], color: "green" }
+          ],
+      },
+      }];
+  
+    var gaugeLayout = {
+      title:
+      {
+        text : "Belly Button Washing Frequency",
+        font : {
+          size: 20,
+          color : 'red'
+        }
+      } ,
+      plot_bgcolor: "#f5f5f5",
+      paper_bgcolor:"#f5f5f5",
+      xaxis : {
+        tickfont : {
+          size: 16,
+          color : 'red'
+        }
+      },
+      yaxis : {
+        tickfont : {
+          size: 16,
+          color : 'red'
+        }
+      },
+      // margin: {
+      //   l: 100,
+      //   r: 100,
+      //   t: 100,
+      //   b: 100
+      // }
+    };
+
+    Plotly.newPlot("gauge", gaugeData, gaugeLayout);
 
   });
 }
